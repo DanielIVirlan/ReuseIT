@@ -31,7 +31,7 @@ Il cuore dell'app permette di vendere dispositivi scegliendo la modalità di sca
 Una funzione unica per preservare il valore emotivo: prima di vendere un oggetto, l'utente può salvarlo in un **archivio digitale** con foto e descrizioni, mantenendo viva la memoria dell'oggetto anche dopo la cessione.
 
 ### 5. Valutazione Istantanea & Sistema "Reuseit"
-- **Valutazione AI**: Inserendo dati e foto, l'utente riceve una quotazione monetaria e un saldo in **Punti Reusics** (punti bonus da utilizzare nell'ecosistema).
+- **Valutazione esperto**: Inserendo dati e foto, l'utente riceve una quotazione monetaria e un saldo in **Punti Reusics** (punti bonus da utilizzare nell'ecosistema).
 
 ### 6. Profilo & Social Dashboard
 - **Gestione Annunci**: Modifica di prezzi, foto e monitoraggio dei preventivi salvati.
