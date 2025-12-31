@@ -1,47 +1,63 @@
-# 📱 Paper - Guida alla Riparazione DIY
+# 📱 Paper - The Circular Electronics Ecosystem
 
-**Paper** è un prototipo di applicazione iOS sviluppato in **SwiftUI** che aiuta gli utenti a riparare i propri dispositivi elettronici attraverso guide dettagliate, valutazioni dei danni e un marketplace integrato.
+**Paper** è una piattaforma innovativa sviluppata in **SwiftUI** che mira a rivoluzionare il ciclo di vita dei dispositivi elettronici. L'app integra un marketplace sicuro, sistemi di logistica intelligente (Locker), guide alla riparazione e una sezione dedicata al valore affettivo degli oggetti.
 
 ---
 
 ## 🎥 Demo dell'App
 Ecco l'app in funzione (Xcode 17 / iOS 18+):
 
-![Descrizione del video](https://github.com/user-attachments/assets/8e148fb1-f9ab-4fbd-86c2-80b391ea268d)
-
+![Demo Video](https://github.com/user-attachments/assets/8e148fb1-f9ab-4fbd-86c2-80b391ea268d)
 
 ---
 
-## 🚀 Caratteristiche Principali
-- **Selezione Oggetto**: Scegli tra diverse categorie (Smartphone, PC/Laptop, Console).
-- **Diagnosi Problemi**: Identifica i problemi comuni tramite una selezione rapida.
-- **Guide Dettagliate**: Accesso a istruzioni passo-passo, tempi stimati e video tutorial esterni.
-- **Valutazione Usato**: Un sistema per valutare lo stato del dispositivo prima della riparazione o vendita.
+## 🌟 Funzionalità Principali
+
+### 1. Marketplace & Logistica Avanzata
+Il cuore dell'app permette di vendere dispositivi scegliendo la modalità di scambio preferita:
+- **Safe Zones**: Selezione di zone sicure sulla mappa per lo scambio a mano.
+- **Locker System**: Integrazione con armadietti intelligenti. Il venditore genera un **QR Code**, deposita l'oggetto e l'acquirente lo ritira con un proprio codice dopo il pagamento.
+- **Spedizione**: Opzione per la spedizione privata tramite corriere.
+
+### 2. Expert Repair & Preventivi
+- **Consulenza Esperti**: L'utente invia i dati del dispositivo e riceve preventivi da tecnici esperti che consigliano se convenga riparare o acquistare un nuovo prodotto.
+- **Logistica Riparazioni**: Possibilità di inviare il dispositivo al tecnico tramite Locker, ritiro a domicilio o consegna a mano.
+
+### 3. Guide alla Riparazione DIY
+- **Database Guide**: Guide specifiche per tipologia di oggetto e problemi comuni (es. sostituzione display).
+- **Social Proof**: Ogni guida mostra l'autore, i voti positivi/negativi della community e video tutorial integrati.
+
+### 4. Archivio dei Ricordi
+Una funzione unica per preservare il valore emotivo: prima di vendere un oggetto, l'utente può salvarlo in un **archivio digitale** con foto e descrizioni, mantenendo viva la memoria dell'oggetto anche dopo la cessione.
+
+### 5. Valutazione Istantanea & Sistema "Reusics"
+- **Valutazione AI**: Inserendo dati e foto, l'utente riceve una quotazione monetaria e un saldo in **Punti Reusics** (punti bonus da utilizzare nell'ecosistema).
+
+### 6. Profilo & Social Dashboard
+- **Gestione Annunci**: Modifica di prezzi, foto e monitoraggio dei preventivi salvati.
+- **Reputazione**: Visualizzazione di tutte le **valutazioni ricevute** dagli altri utenti per i propri oggetti.
+- **Sicurezza**: Gestione account, Wallet QR Code e funzionalità di ripristino password/logout.
+
+---
+
+## 🗺️ Nota sulle Mappe (Modalità Demo)
+Il modulo mappe è attualmente in modalità **Interattiva Demo**:
+- La mappa mostra icone predefinite per **Locker e Safe Zones**.
+- Non è implementata la geolocalizzazione GPS real-time: l'utente può selezionare manualmente i punti di interesse sulla mappa per simulare il processo di vendita/ritiro.
 
 ---
 
 ## 🛠 Note Tecniche
-L'app è stata sviluppata seguendo i più recenti standard di Apple:
-- **Linguaggio**: Swift
+- **Linguaggio**: Swift 6
 - **Framework**: SwiftUI
-- **Versione Xcode**: Xcode 17.0+ 
-- **Target iOS**: iOS 18.0+
-- **Architettura**: Clean & Modular (Organizzata in Gruppi: `Models`, `Views`, `Resources`).
+- **Target**: iOS 18.0+
+- **Xcode**: 17.0+
+- **Architettura**: Modulare (Organizzata in: `Models`, `Views`, `Resources`).
 
 ---
 
-## 📂 Organizzazione del Progetto
-Il codice è strutturato per essere facilmente leggibile e scalabile:
-- `Models/`: Contiene le strutture dati (`Guida`, `Problema`, `Categoria`).
-- `Views/`: Contiene tutte le schermate dell'interfaccia divise per funzionalità.
-- `Resources/`: Asset grafici e icone.
-
----
-
-## 👨‍💻 Come Provare l'App
-Per testare il progetto sul tuo Mac:
+## 👨‍💻 Installazione Locale
 1. Clonare la repository: `git clone https://github.com/TUO_UTENTE/Paper.git`
-2. Aprire il file `Paper.xcodeproj` con **Xcode**.
-3. Assicurarsi di aver selezionato un simulatore con **iOS 18 o superiore**.
-4. Premere `Cmd + R` per avviare.
-
+2. Aprire `Paper.xcodeproj` in Xcode.
+3. Selezionare un simulatore iPhone (iOS 18+).
+4. Build & Run (`Cmd + R`).
