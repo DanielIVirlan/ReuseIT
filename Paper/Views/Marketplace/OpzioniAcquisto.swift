@@ -72,7 +72,7 @@ struct OpzioniAcquisto: View {
     }
 }
 
-// --- Sub-Views (Extensions) ---
+// --- Sub-Views ---
 extension OpzioniAcquisto {
     
     private var headerSection: some View {

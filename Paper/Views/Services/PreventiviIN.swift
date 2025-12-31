@@ -9,15 +9,15 @@ struct Preventivo: Identifiable {
     let prezzo: Double
     let valutazione: Double
     let distanza: Double
-    let via: String      // <--- AGGIUNTO
-    let civico: String   // <--- AGGIUNTO
+    let via: String
+    let civico: String
 }
 
 struct PreventivoIN: View {
     var oggetto: String
     var tipoRiparazione: String
     
-    // 2. Dati di esempio aggiornati con indirizzi reali
+    // 2. Dati di esempio 
     let preventivi: [Preventivo] = [
         Preventivo(nomeDitta: "Riparazioni Veloci H24", logoDitta: "tools.fill", descrizione: "Intervento rapido certificato. Utilizziamo solo ricambi di grado A+.", prezzo: 65.00, valutazione: 4.7, distanza: 1.2, via: "Via Roma", civico: "15"),
         Preventivo(nomeDitta: "Tech Hub Store", logoDitta: "cpu.fill", descrizione: "Specialisti in rigenerazione. Ritiro e riconsegna inclusi.", prezzo: 89.90, valutazione: 4.9, distanza: 3.5, via: "Corso Italia", civico: "128"),

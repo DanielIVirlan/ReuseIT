@@ -75,9 +75,9 @@
 		65DCF7182F04BE8200E6D5C1 = {
 			isa = PBXGroup;
 			children = (
-				65DCF7312F04BE8200E6D5C1 /* PaperTests */,
-				65DCF73B2F04BE8300E6D5C1 /* PaperUITests */,
 				65DCF7EC2F04DDC700E6D5C1 /* Paper */,
+				65DCF73B2F04BE8300E6D5C1 /* PaperUITests */,
+				65DCF7312F04BE8200E6D5C1 /* PaperTests */,
 				65DCF7222F04BE8200E6D5C1 /* Products */,
 			);
 			sourceTree = "<group>";

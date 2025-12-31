@@ -25,7 +25,7 @@ struct CategoriaOggetto: Identifiable, Hashable, Equatable {
     let problemiComuni: [Problema]
 }
 
-// Dati di esempio pronti per l'uso
+// Dati di esempio
 let categorieDati = [
     CategoriaOggetto(nome: "Smartphone", icona: "iphone", problemiComuni: [
         Problema(titolo: "Sostituzione Schermo OLED", guidaDettaglio: Guida(
@@ -110,6 +110,6 @@ let categorieDati = [
         
     ]),
     CategoriaOggetto(nome: "Elettrodomestici", icona: "washer", problemiComuni: [
-        // Aggiungi qui altre guide...
+        // ....
     ])
 ]

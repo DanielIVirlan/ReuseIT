@@ -68,7 +68,6 @@ struct DettaglioGuidaView: View {
             }
             .listStyle(.insetGrouped)
             
-            // Tasto Video Blu integrato senza scheda bianca
             VStack {
                 Button(action: {
                     if let url = URL(string: guida.videoUrl) {
@@ -95,7 +94,6 @@ struct DettaglioGuidaView: View {
 }
 
 // MARK: - PREVIEW
-// Questo blocco permette di vedere la UI a destra nel Canvas di Xcode
 #Preview {
     NavigationView {
         DettaglioGuidaView(

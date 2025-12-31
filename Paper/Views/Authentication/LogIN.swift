@@ -1,10 +1,7 @@
 import SwiftUI
 
 
-// Assumi che tu abbia importato il file 'CreazioneAnnuncio.swift'
-// Se la View è definita nello stesso file del progetto, l'import non è necessario,
-// ma l'ho aggiunto per chiarezza:
-// import CreazioneAnnuncio // Rimuovi questo se la View è già nota al progetto
+
 
 struct LogIN: View {
     // MARK: - Variabili di Stato
@@ -23,16 +20,15 @@ struct LogIN: View {
     // MARK: - Corpo della View
     
     var body: some View {
-        // Usa NavigationStack per permettere lo switch tra Login e CreazioneAnnuncio
         NavigationStack {
             // Se l'utente è loggato, mostra la vista CreazioneAnnuncio
             if isLoggedIn {
                 
-                CreazioneAnnuncioWrapper(username: username) // Un wrapper per la tua view di destinazione
+                CreazioneAnnuncioWrapper(username: username) // Un wrapper per la view di destinazione
             } else {
                 // Schermata di Login
                 ZStack {
-                    // Sfondo (Colore base del tuo stile)
+                    // Sfondo
                     Color(red: 0.94, green: 0.95, blue: 0.97).ignoresSafeArea()
                     
                     VStack(spacing: 30) {
@@ -108,7 +104,7 @@ struct LogIN: View {
 }
 
 // MARK: - Componenti Riutilizzabili (Mantengono lo stile precedente)
-// (CustomTextField e CustomSecureField rimangono invariati)
+
 
 struct CustomTextField: View {
     let placeholder: String
@@ -162,9 +158,7 @@ struct CustomSecureField: View {
 
 // MARK: - Wrapper per CreazioneAnnuncio (Sostituisce WelcomeView)
 
-/// Questa view è un semplice wrapper che mostra il messaggio di successo per un attimo
-/// e poi reindirizza l'utente alla schermata di creazione annuncio.
-// Nel file LogIN.swift, aggiorna il wrapper:
+
 struct CreazioneAnnuncioWrapper: View {
     let username: String // Riceve il nome dal Login
     @State private var showSuccessMessage: Bool = true
@@ -193,12 +187,7 @@ struct CreazioneAnnuncioWrapper: View {
     }
 }
 
-// E nella View LogIN principale, passa l'username al wrapper:
-// NavigationStack {
-//    if isLoggedIn {
-//        CreazioneAnnuncioWrapper(username: username)
-//    } else { ... }
-// }
+
 
 // MARK: - Preview
 
@@ -209,5 +198,5 @@ struct LogIN_Previews: PreviewProvider {
 }
 
 
-// 7. TASTO CONTINUA
+
 

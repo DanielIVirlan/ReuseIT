@@ -30,7 +30,6 @@ struct Archivio: View {
                 } else {
                     List {
                         ForEach(ricordi) { ricordo in
-                            // Navigazione verso il dettaglio
                             NavigationLink(destination: DettaglioRicordoView(ricordo: ricordo)) {
                                 HStack(spacing: 15) {
                                     if let primaFoto = ricordo.immagini.first {

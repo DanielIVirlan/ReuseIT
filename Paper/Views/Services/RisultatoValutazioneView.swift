@@ -64,7 +64,7 @@ struct RisultatoValutazioneView: View {
 
             // --- AREA BOTTONI NATIVI IN BASSO ---
             VStack(spacing: 8) {
-                // Tasto Smaltisci (Blu come richiesto)
+                // Tasto Smaltisci 
                 Button(action: { vaiASmaltimento = true }) {
                     HStack {
                         Image(systemName: "trash.fill")

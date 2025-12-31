@@ -97,7 +97,7 @@ struct ProfiloView: View {
                 
                 // --- TASTO REIMPOSTA PASSWORD ---
                 Button(action: {
-                    // Azione per reimpostare la password
+                    // Azione per reimpostare la password to do maybe
                 }) {
                     Text("Reimposta Password")
                         .foregroundColor(.blue)

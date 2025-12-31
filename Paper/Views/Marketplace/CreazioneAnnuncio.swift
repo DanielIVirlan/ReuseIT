@@ -12,7 +12,7 @@ struct CreazioneAnnuncio: View {
     
     // --- Variabili per le FOTO ---
     @State private var selectedItems: [PhotosPickerItem] = [] // Elementi selezionati
-    @State private var selectedImages: [UIImage] = []        // Immagini caricate (usiamo UIImage per facilitare la rimozione)
+    @State private var selectedImages: [UIImage] = []        // Immagini caricate
     @State private var isUploading: Bool = false             // Stato per la ProgressView
     
     // Liste per i menu
@@ -200,25 +200,7 @@ struct CreazioneAnnuncio: View {
                         Spacer(minLength: 40)
                         
                         
-                        
-                        /*
-                         NavigationLink(destination: OpzioniVendita()) {
-                             Text("CONTINUA")
-                                 .font(.title3).fontWeight(.bold).foregroundColor(.white)
-                                 .frame(maxWidth: .infinity).frame(height: 60)
-                                 .background(isFormValid ? Color.blue : Color.gray.opacity(0.5))
-                                 .cornerRadius(15).shadow(radius: 5)
-                         }
-                         .disabled(!isFormValid)
-                         .padding(.horizontal).padding(.bottom, 20)
-                         }
-                         
-                         */
-                        
-                        
-                        
-                        
-                        // 7. TASTO CONTINUA
+                       
                         
                         NavigationLink(destination: OpzioniVendita()) {
                             Text("CONTINUA")
@@ -232,7 +214,6 @@ struct CreazioneAnnuncio: View {
                     }
                 }
             }
-            //.navigationBarHidden(true)
             .scrollDismissesKeyboard(.interactively)
         }
     }
@@ -259,7 +240,7 @@ struct CreazioneAnnuncio: View {
     // --- Logica per rimuovere un'immagine ---
     private func removeImage(at index: Int) {
         selectedImages.remove(at: index)
-        selectedItems.remove(at: index) // Rimuoviamo anche l'item dal picker per tenerli sincronizzati
+        selectedItems.remove(at: index) 
     }
     
     var isFormValid: Bool {

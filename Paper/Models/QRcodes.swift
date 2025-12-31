@@ -1,7 +1,6 @@
 import SwiftUI
 
 // MARK: - Modello Dati
-// Assicurati che questa struct sia definita una sola volta nel progetto
 struct QRTicket: Identifiable {
     let id = UUID()
     let titolo: String
@@ -24,7 +23,6 @@ struct QRCodes: View {
             Color(UIColor.systemGroupedBackground).ignoresSafeArea()
             
             List(tickets) { ticket in
-                // La chiamata corretta alla vista dettaglio
                 NavigationLink(destination: DettaglioQR(ticket: ticket)) {
                     HStack(spacing: 15) {
                         Image(systemName: "qrcode")
@@ -53,7 +51,6 @@ struct QRCodes: View {
 
 // MARK: - Vista Dettaglio
 struct DettaglioQR: View {
-    // Questa proprietà deve chiamarsi esattamente 'ticket' per corrispondere alla chiamata sopra
     let ticket: QRTicket
     
     var body: some View {

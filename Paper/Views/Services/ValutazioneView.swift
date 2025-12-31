@@ -14,7 +14,7 @@ struct ValutazioneView: View {
     let condizioni = ["Nuovo", "Ottimo", "Buono", "Usurato"]
 
     var body: some View {
-        VStack(spacing: 0) { // Usiamo un VStack per separare Form e Bottone
+        VStack(spacing: 0) { 
             Form {
                 Section("Dati Oggetto") {
                     TextField("Titolo", text: $titolo)
@@ -82,7 +82,7 @@ struct ValutazioneView: View {
                 .padding(.top, 10)         // Spazio sopra il tasto
                 .padding(.bottom, 10)      // Spazio sotto il tasto (rispetto alla safe area)
             }
-            .background(Color(UIColor.systemGroupedBackground)) // Colore di sfondo uguale alla Form per continuità
+            .background(Color(UIColor.systemGroupedBackground))
         }
         .navigationTitle("Valuta Oggetto")
         .background(

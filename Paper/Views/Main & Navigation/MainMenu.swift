@@ -56,7 +56,6 @@ struct MainMenu: View {
                         
                         
                         
-                        // --- NUOVE CASELLE AGGIUNTE ---
                         
                         NavigationLink(destination: ValutazioneView()){
                             MenuButtonView(title: "Valuta oggetti", icon: "chart.line.uptrend.xyaxis")

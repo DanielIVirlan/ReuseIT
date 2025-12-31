@@ -53,7 +53,6 @@ struct MappaSimulataView: View {
                         .onTapGesture {
                             withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
                                 selectedIndex = index
-                                // LOGICA FISSA: Determina il prefisso corretto
                                 let prefisso = (option == .locker) ? "Locker" : "Zona Sicura"
                                 lockerSelezionato = "\(prefisso) \(index + 1) - \(indirizzi[index])"
                             }
