@@ -7,16 +7,22 @@
 ## 🎥 Demo dell'App
 Ecco l'app in funzione (Xcode 17 / iOS 18+):
 
-<table align="center">
+<table width="100%">
   <tr>
-    <td align="center" valign="top">
-      <p><b>📱 Demo dell'App</b></p>
-      <video src="" width="300" controls></video>
+    <td width="33%" align="center" valign="top">
+      <p><b>📱 Demo Parte 1</b></p>
+      <video src="https://github.com/user-attachments/assets/3390e263-ec92-4e46-8c50-0b360d95c313" width="100%" controls></video>
+    </td>
+    <td width="33%" align="center" valign="top">
+      <p><b>📱 Demo Parte 2</b></p>
+      <video src="https://github.com/user-attachments/assets/69adf429-1bac-450e-8845-ca39739ce9d6" width="100%" controls></video>
+    </td>
+    <td width="33%" align="center" valign="top">
+      <p><b>📱 Demo Parte 3</b></p>
+      <video src="https://github.com/user-attachments/assets/0e92ac11-2129-41ea-a8cb-54778c4334d2" width="100%" controls></video>
     </td>
   </tr>
 </table>
-
-
 
 
 ---
