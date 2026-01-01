@@ -15,22 +15,22 @@ struct SelezionePrev: View {
     
     // --- Variabile Locker ---
     @State private var lockerSceltoInfo: String = ""
-
+    
     // --- Variabili di Navigazione ---
     @State private var mostraConferma = false
     @State private var vaiAQRCodes = false
     @State private var vaiAlMenu = false
     @State private var codiceTemporaneo = "REP-552"
-
+    
     @Environment(\.dismiss) var dismiss
-
+    
     var professioneTecnico: String {
         let riparazione = tipoRiparazione.lowercased()
         if riparazione.contains("schermo") || riparazione.contains("batteria") { return "Tecnico Hardware Mobile" }
         else if riparazione.contains("pc") { return "Sistemista PC" }
         else { return "Specialista Certificato" }
     }
-
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -38,7 +38,6 @@ struct SelezionePrev: View {
                 
                 ScrollView {
                     VStack(spacing: 20) {
-                        
                         // --- LOGO E INTESTAZIONE ---
                         VStack(spacing: 10) {
                             Image(systemName: preventivo.logoDitta)
@@ -50,7 +49,7 @@ struct SelezionePrev: View {
                                 .font(.title3).fontWeight(.bold)
                         }
                         .padding(.top)
-
+                        
                         // --- NUOVA SCHEDA POSIZIONE SEDE ---
                         VStack(alignment: .leading, spacing: 10) {
                             HStack {
@@ -76,7 +75,7 @@ struct SelezionePrev: View {
                         .background(Color.white)
                         .cornerRadius(15)
                         .padding(.horizontal)
-
+                        
                         // --- SCHEDA RIPARATORE ---
                         VStack(alignment: .leading, spacing: 12) {
                             HStack { Image(systemName: "person.badge.shield.check.fill").foregroundColor(.blue); Text("Riparatore incaricato").fontWeight(.bold) }
@@ -89,8 +88,8 @@ struct SelezionePrev: View {
                         .background(Color.white)
                         .cornerRadius(15)
                         .padding(.horizontal)
-
-                        // --- SEZIONE CONSEGNA OGGETTO (RIPRISTINATA) ---
+                        
+                        // --- SEZIONE CONSEGNA OGGETTO  ---
                         VStack(alignment: .leading, spacing: 12) {
                             Text("Modalità di consegna oggetto").fontWeight(.semibold).padding(.horizontal)
                             
@@ -117,7 +116,7 @@ struct SelezionePrev: View {
                                 }
                                 .padding(.horizontal)
                             }
-
+                            
                             if consegnaScelta == "Ritiro a domicilio" {
                                 VStack(spacing: 12) {
                                     TextField("Via / Piazza", text: $via).padding().background(Color.white).cornerRadius(10)
@@ -129,7 +128,7 @@ struct SelezionePrev: View {
                                 }.padding(.horizontal)
                             }
                         }
-
+                        
                         Spacer(minLength: 40)
                         
                         // --- TASTO CONTINUA ---
@@ -160,15 +159,17 @@ struct SelezionePrev: View {
             }
         }
     }
-
+    
     // MARK: - Logica Validazione
+
     var isFormValid: Bool {
         if consegnaScelta == "Ritiro a domicilio" { return !via.isEmpty && !civico.isEmpty && !cap.isEmpty }
         if consegnaScelta == "Locker" { return !lockerSceltoInfo.isEmpty }
         return true
     }
-
+    
     // MARK: - Conferma Temporanea
+
     var schermataConfermaTemporanea: some View {
         VStack(spacing: 30) {
             Spacer()

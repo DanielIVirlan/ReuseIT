@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct MainMenu: View {
-    
     let username: String
     let columns = [
         GridItem(.flexible(), spacing: 20),
@@ -12,7 +11,6 @@ struct MainMenu: View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
-                    
                     Spacer()
                         .frame(height: 30)
                     
@@ -22,56 +20,38 @@ struct MainMenu: View {
                         .padding(.horizontal)
                     
                     LazyVGrid(columns: columns, spacing: 20) {
-                        
-                        // --- VENDI ---
                         NavigationLink(destination: CreazioneAnnuncio()) {
                             MenuButtonView(title: "Vendi", icon: "eurosign.circle.fill")
                         }
                         
-                        // --- ACQUISTA ---
-                        NavigationLink(destination: AnnunciVenditaView()){
+                        NavigationLink(destination: AnnunciVenditaView()) {
                             MenuButtonView(title: "Acquista", icon: "cart.fill")
                         }
                         
-                        // --- PREVENTIVO ---
-                        NavigationLink(destination: PreventivoRip()){
+                        NavigationLink(destination: PreventivoRip()) {
                             MenuButtonView(title: "Preventivo riparazione", icon: "doc.text.magnifyingglass")
                         }
                         
-                        NavigationLink(destination: SelezioneGuidaView()){
+                        NavigationLink(destination: SelezioneGuidaView()) {
                             MenuButtonView(title: "Guida riparazione", icon: "wrench.and.screwdriver.fill")
                         }
                         
-                        
-                        
-                        NavigationLink(destination: Archivio()){
+                        NavigationLink(destination: Archivio()) {
                             MenuButtonView(title: "Archivio ricordi", icon: "photo.on.rectangle.angled")
                         }
                         
-                        
-                        NavigationLink(destination: QRCodes()){
+                        NavigationLink(destination: QRCodes()) {
                             MenuButtonView(title: "QR Code", icon: "qrcode.viewfinder")
-                            
-                        }
+                         }
                         
-                        
-                        
-                        
-                        NavigationLink(destination: ValutazioneView()){
+                        NavigationLink(destination: ValutazioneView()) {
                             MenuButtonView(title: "Valuta oggetti", icon: "chart.line.uptrend.xyaxis")
-                            
-                        }
+                         }
                         
-                        
-                        
-                        
-                        
-                        
-                        NavigationLink(destination: ProfiloView()){
+                        NavigationLink(destination: ProfiloView()) {
                             MenuButtonView(title: "Profilo", icon: "person.crop.circle.fill")
                         }
-                        
-                    }
+                     }
                     .padding(.horizontal)
                 }
                 .padding(.bottom, 30) // Spazio extra in fondo per lo scroll
@@ -108,6 +88,6 @@ struct MenuButtonView: View {
 // Preview
 struct MainMenu_Previews: PreviewProvider {
     static var previews: some View {
-        MainMenu(username:"Admin")
+        MainMenu(username: "Admin")
     }
 }

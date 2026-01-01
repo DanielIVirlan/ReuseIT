@@ -1,10 +1,8 @@
-import SwiftUI
 import PhotosUI
-
 import SwiftUI
-import PhotosUI
 
 // MARK: - 1. MODELLI DATI
+
 struct AnnuncioModel: Identifiable {
     let id = UUID()
     var titolo: String
@@ -22,17 +20,17 @@ struct ValutazioneRicevuta: Identifiable {
     var prezzoStimato: String
     var puntiStimati: Int
     var immagini: [UIImage]
-    var data: Date = Date()
+    var data: Date = .init()
 }
 
 // MARK: - 2. VISTA PRINCIPALE PROFILO
+
 struct ProfiloView: View {
-    @State private var username: String = "admin"
+    @State private var username: String = "daniel"
     @State private var password: String = "admin"
     @State private var passwordVisibile: Bool = false
     @State private var puntiAccumulati: Int = 1100
     
-    // Annunci inizializzati con le immagini dei tuoi Assets
     @State private var mieiAnnunci = [
         AnnuncioModel(titolo: "iPhone 15 Pro - Grigio",
                       prezzo: "850,00",
@@ -53,7 +51,6 @@ struct ProfiloView: View {
                                  UIImage(named: "mac_2") ?? UIImage(systemName: "photo")!])
     ]
     
-    // --- QUESTA È LA VARIABILE CHE MANCAVA ---
     @State private var valutazioniRicevute: [ValutazioneRicevuta] = [
         ValutazioneRicevuta(titolo: "MacBook Pro M2",
                             categoria: "Elettronica",
@@ -61,7 +58,7 @@ struct ProfiloView: View {
                             descrizione: "Tenuto perfettamente, batteria al 90%",
                             prezzoStimato: "850,00",
                             puntiStimati: 850,
-                            immagini: [UIImage(named: "mac_1")!]),
+                            immagini: [UIImage(named: "mac_1") ?? UIImage(systemName: "photo")!]),
         
         ValutazioneRicevuta(titolo: "Bicicletta da corsa",
                             categoria: "Sport",
@@ -69,11 +66,11 @@ struct ProfiloView: View {
                             descrizione: "Qualche graffio sul telaio, catena nuova",
                             prezzoStimato: "250,00",
                             puntiStimati: 250,
-                            immagini: [UIImage(named: "bicycle")!])
+                            immagini: [UIImage(named: "bicycle") ?? UIImage(systemName: "photo")!])
     ]
-
+    
     var body: some View {
-        NavigationStack { // Aggiunto per permettere la navigazione
+        NavigationStack {
             List {
                 Section(header: Text("Attività")) {
                     NavigationLink(destination: MieAnnunciView(annunci: $mieiAnnunci)) {
@@ -125,14 +122,13 @@ struct ProfiloView: View {
                         }
                     }
                     
-                    Button(action: { }) {
+                    Button(action: {}) {
                         Text("Reimposta Password").foregroundColor(.blue)
                     }
                 }
                 
                 Section {
-                    // Nota: Assicurati che la View LogIN esista nel tuo progetto
-                    NavigationLink(destination: Text("Schermata Login").navigationBarBackButtonHidden(true)) {
+                    NavigationLink(destination: LogIN().navigationBarBackButtonHidden(true)) {
                         HStack {
                             Spacer()
                             Text("Log Out").fontWeight(.bold).foregroundColor(.red)
@@ -147,12 +143,16 @@ struct ProfiloView: View {
     }
 }
 
+// MARK: - 3. VISTA ELENCO ANNUNCI (CORRETTA)
 
-// MARK: - 3. VISTA ELENCO ANNUNCI
 struct MieAnnunciView: View {
     @Binding var annunci: [AnnuncioModel]
     @State private var annuncioDaModificare: AnnuncioModel?
-
+    
+    // Stati per l'Alert di eliminazione
+    @State private var mostraAlertElimina = false
+    @State private var annuncioDaEliminare: AnnuncioModel?
+    
     var body: some View {
         List {
             ForEach(annunci) { annuncio in
@@ -171,11 +171,10 @@ struct MieAnnunciView: View {
                                 ForEach(annuncio.immagini, id: \.self) { img in
                                     Image(uiImage: img)
                                         .resizable()
-                                        .scaledToFit()
+                                        .scaledToFill()
                                         .frame(width: 80, height: 80)
-                                        .padding(5)
-                                        .background(Color.blue.opacity(0.05))
                                         .cornerRadius(10)
+                                        .clipped()
                                 }
                             }
                         }
@@ -192,9 +191,10 @@ struct MieAnnunciView: View {
                         }
                         .buttonStyle(.bordered)
                         
+                        // TASTO ELIMINA CON ALERT
                         Button(role: .destructive, action: {
-                            if annunci.firstIndex(where: { $0.id == annuncio.id }) != nil {
-                            }
+                            annuncioDaEliminare = annuncio
+                            mostraAlertElimina = true
                         }) {
                             HStack {
                                 Image(systemName: "trash")
@@ -208,6 +208,21 @@ struct MieAnnunciView: View {
             }
         }
         .navigationTitle("I miei Annunci")
+        // ALERT DI CONFERMA
+        .alert("Elimina Annuncio", isPresented: $mostraAlertElimina) {
+            Button("Elimina", role: .destructive) {
+                if let daEliminare = annuncioDaEliminare {
+                    if let index = annunci.firstIndex(where: { $0.id == daEliminare.id }) {
+                        withAnimation {
+                            _ = annunci.remove(at: index)
+                        }
+                    }
+                }
+            }
+            Button("Annulla", role: .cancel) {}
+        } message: {
+            Text("Sei sicuro di voler eliminare '\(annuncioDaEliminare?.titolo ?? "questo annuncio")'? L'azione non può essere annullata.")
+        }
         .sheet(item: $annuncioDaModificare) { item in
             ModificaAnnuncioView(annunci: $annunci, annuncio: item)
         }
@@ -215,6 +230,7 @@ struct MieAnnunciView: View {
 }
 
 // MARK: - 4. VISTA MODIFICA ANNUNCIO
+
 struct ModificaAnnuncioView: View {
     @Environment(\.dismiss) var dismiss
     @Binding var annunci: [AnnuncioModel]
@@ -223,7 +239,7 @@ struct ModificaAnnuncioView: View {
     @State private var immaginiLocali: [UIImage]
     @State private var selectedItems: [PhotosPickerItem] = []
     var idAnnuncio: UUID
-
+    
     init(annunci: Binding<[AnnuncioModel]>, annuncio: AnnuncioModel) {
         self._annunci = annunci
         self._titoloLocal = State(initialValue: annuncio.titolo)
@@ -231,9 +247,9 @@ struct ModificaAnnuncioView: View {
         self._immaginiLocali = State(initialValue: annuncio.immagini)
         self.idAnnuncio = annuncio.id
     }
-
+    
     var body: some View {
-        NavigationView {
+        NavigationStack {
             Form {
                 Section(header: Text("Dati Principali")) {
                     TextField("Nuovo Titolo", text: $titoloLocal)
@@ -241,36 +257,41 @@ struct ModificaAnnuncioView: View {
                 }
                 Section(header: Text("Media")) {
                     PhotosPicker(selection: $selectedItems, maxSelectionCount: 5, matching: .images) {
-                        HStack {
-                            Image(systemName: "photo.on.rectangle.angled")
-                            Text("Aggiungi foto dalla galleria")
-                        }
+                        Label("Aggiungi foto dalla galleria", systemImage: "photo.on.rectangle.angled")
                     }
-                    .onChange(of: selectedItems) { oldValue, newValue in
+                    .onChange(of: selectedItems) { _, newValue in
                         caricaImmagini(da: newValue)
                     }
+                    
                     if !immaginiLocali.isEmpty {
                         ScrollView(.horizontal) {
                             HStack(spacing: 15) {
                                 ForEach(immaginiLocali, id: \.self) { img in
                                     ZStack(alignment: .topTrailing) {
-                                        Image(uiImage: img).resizable().scaledToFit().frame(width: 100, height: 100).padding(5).background(Color.gray.opacity(0.1)).cornerRadius(10)
+                                        Image(uiImage: img)
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: 100, height: 100)
+                                            .cornerRadius(10)
+                                            .clipped()
+                                        
                                         Button(action: {
                                             if let index = immaginiLocali.firstIndex(of: img) { immaginiLocali.remove(at: index) }
                                         }) {
-                                            Image(systemName: "xmark.circle.fill").foregroundColor(.red).background(Circle().fill(Color.white))
+                                            Image(systemName: "xmark.circle.fill")
+                                                .foregroundColor(.red)
+                                                .background(Circle().fill(Color.white))
                                         }.offset(x: 5, y: -5)
                                     }
                                 }
-                            }
-                            .padding(.vertical)
+                            }.padding()
                         }
                     }
                 }
             }
             .navigationTitle("Modifica")
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
+                ToolbarItem(placement: .confirmationAction) {
                     Button("Salva") {
                         if let index = annunci.firstIndex(where: { $0.id == idAnnuncio }) {
                             annunci[index].titolo = titoloLocal
@@ -280,11 +301,13 @@ struct ModificaAnnuncioView: View {
                         dismiss()
                     }
                 }
-                ToolbarItem(placement: .navigationBarLeading) { Button("Annulla") { dismiss() } }
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Annulla") { dismiss() }
+                }
             }
         }
     }
-
+    
     func caricaImmagini(da items: [PhotosPickerItem]) {
         for item in items {
             Task {
@@ -297,6 +320,7 @@ struct ModificaAnnuncioView: View {
 }
 
 // MARK: - 5. LISTA VALUTAZIONI RICEVUTE
+
 struct ListaValutazioniView: View {
     let valutazioni: [ValutazioneRicevuta]
     var body: some View {
@@ -315,7 +339,6 @@ struct ListaValutazioniView: View {
     }
 }
 
-// MARK: - 6. DETTAGLIO VALUTAZIONE RICEVUTA
 struct DettaglioValutazioneView: View {
     let valutazione: ValutazioneRicevuta
     var body: some View {
@@ -331,37 +354,25 @@ struct DettaglioValutazioneView: View {
                     }
                 }
                 VStack(alignment: .leading, spacing: 20) {
-                    VStack(alignment: .leading, spacing: 5) {
-                        Text(valutazione.titolo).font(.system(size: 28, weight: .bold))
-                        Text("Inserito il \(valutazione.data.formatted(date: .long, time: .omitted))").font(.subheadline).foregroundColor(.secondary)
-                    }
-                    HStack(spacing: 15) {
+                    Text(valutazione.titolo).font(.system(size: 28, weight: .bold))
+                    HStack {
                         VStack {
-                            Text("STIMA CASH").font(.caption).bold().foregroundColor(.secondary)
+                            Text("STIMA CASH").font(.caption).bold()
                             Text("€\(valutazione.prezzoStimato)").font(.title2).bold().foregroundColor(.blue)
-                        }.frame(maxWidth: .infinity).padding().background(Color.white).cornerRadius(15).shadow(color: .black.opacity(0.05), radius: 5)
+                        }.frame(maxWidth: .infinity).padding().background(Color.white).cornerRadius(15)
                         VStack {
-                            Text("PUNTI GREEN").font(.caption).bold().foregroundColor(.secondary)
+                            Text("PUNTI GREEN").font(.caption).bold()
                             Text("\(valutazione.puntiStimati)").font(.title2).bold().foregroundColor(.orange)
-                        }.frame(maxWidth: .infinity).padding().background(Color.white).cornerRadius(15).shadow(color: .black.opacity(0.05), radius: 5)
-                    }
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("DETTAGLI INSERITI").font(.caption).bold().foregroundColor(.secondary)
-                        HStack { Text("Categoria"); Spacer(); Text(valutazione.categoria).bold() }
-                        Divider()
-                        HStack { Text("Condizione"); Spacer(); Text(valutazione.condizione).bold() }
-                    }.padding().background(Color.white).cornerRadius(15)
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("DESCRIZIONE ORIGINALE").font(.caption).bold().foregroundColor(.secondary)
-                        Text(valutazione.descrizione).padding().frame(maxWidth: .infinity, alignment: .leading).background(Color.white).cornerRadius(15).shadow(color: .black.opacity(0.05), radius: 2)
+                        }.frame(maxWidth: .infinity).padding().background(Color.white).cornerRadius(15)
                     }
                 }.padding(.horizontal)
-            }.padding(.vertical)
-        }.background(Color(red: 0.94, green: 0.95, blue: 0.97).ignoresSafeArea()).navigationTitle("Dettaglio Storico")
+            }
+        }.background(Color(red: 0.94, green: 0.95, blue: 0.97).ignoresSafeArea())
     }
 }
 
 // MARK: - 7. VISTA PREVENTIVI SCELTI
+
 struct MieiPreventiviSceltiView: View {
     var body: some View {
         List {

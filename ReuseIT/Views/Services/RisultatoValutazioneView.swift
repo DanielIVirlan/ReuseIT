@@ -9,7 +9,7 @@ struct RisultatoValutazioneView: View {
     @Environment(\.dismiss) var dismiss
     @State private var vaiASmaltimento = false
     @State private var tornaAlMenu = false
-
+    
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) { // VStack principale per dividere contenuto e bottoni
@@ -32,7 +32,7 @@ struct RisultatoValutazioneView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .background(Color.white)
                         .cornerRadius(15)
-
+                        
                         // Scheda Valutazione
                         VStack(spacing: 20) {
                             Text("VALUTAZIONE STIMATA")
@@ -62,10 +62,10 @@ struct RisultatoValutazioneView: View {
                     }
                     .padding()
                 }
-
+                
                 // --- AREA BOTTONI NATIVI IN BASSO ---
                 VStack(spacing: 8) {
-                    // Tasto Smaltisci 
+                    // Tasto Smaltisci
                     Button(action: { vaiASmaltimento = true }) {
                         HStack {
                             Image(systemName: "trash.fill")
@@ -80,7 +80,7 @@ struct RisultatoValutazioneView: View {
                     }
                     .padding(.horizontal, 20)
                     .padding(.top, 10)
-
+                    
                     // Tasto Annulla
                     Button(action: { tornaAlMenu = true }) {
                         Text("Annulla")

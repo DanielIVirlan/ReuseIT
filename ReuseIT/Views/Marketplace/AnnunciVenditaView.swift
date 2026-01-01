@@ -13,17 +13,17 @@ struct AnnunciVenditaView: View {
     let annunci = [
         Annuncio(titolo: "iPhone 15 Pro",
                  descrizione: "Ottime condizioni, batteria 95%. Grigio titanio.",
-                 prezzo: 850.00,
+                 prezzo: 850,
                  nomiImmagini: ["iphone_1", "iphone_2"]),
         
         Annuncio(titolo: "PlayStation 5",
                  descrizione: "Versione disco, incluso secondo controller DualSense.",
-                 prezzo: 400.00,
+                 prezzo: 400,
                  nomiImmagini: ["ps5_1", "ps5_2"]),
         
         Annuncio(titolo: "MacBook Air M2",
                  descrizione: "8GB RAM, 256GB SSD. Come nuovo, pochissimi cicli.",
-                 prezzo: 950.00,
+                 prezzo: 950,
                  nomiImmagini: ["mac_1", "mac_2"])
     ]
     
@@ -57,7 +57,7 @@ struct AnnunciVenditaView: View {
                 }
             }
             .navigationTitle("Annunci in vendita")
-        }
+         }
     }
 }
 
@@ -89,11 +89,10 @@ struct DettaglioAnnuncioView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
-                
                 // Carosello Immagini
                 ZStack(alignment: .topTrailing) {
                     TabView(selection: $indiceCorrente) {
-                        ForEach(0..<annuncio.nomiImmagini.count, id: \.self) { index in
+                        ForEach(0 ..< annuncio.nomiImmagini.count, id: \.self) { index in
                             Image(annuncio.nomiImmagini[index])
                                 .resizable()
                                 .scaledToFill()
@@ -115,7 +114,7 @@ struct DettaglioAnnuncioView: View {
                         .padding(20)
                 }
                 .padding(.horizontal)
-
+                
                 VStack(alignment: .leading, spacing: 15) {
                     // Titolo e Prezzo
                     VStack(alignment: .leading, spacing: 5) {
@@ -133,14 +132,12 @@ struct DettaglioAnnuncioView: View {
                     HStack(spacing: 15) {
                         MetodoConsegnaView(icona: "box.truck", testo: "Spedizione", colore: .orange)
                         
-                        // Ho cambiato l'icona del Locker con 'shippingbox'
-                        // Altre opzioni: "archivebox", "square.grid.2x2", "door.left.hand.closed"
                         MetodoConsegnaView(icona: "shippingbox", testo: "Locker", colore: .green)
                         
                         MetodoConsegnaView(icona: "mappin.and.ellipse", testo: "Safe Zone", colore: .blue)
                     }
                     .padding(.vertical, 5)
-
+                    
                     Divider()
                     
                     Text("Descrizione")

@@ -3,7 +3,7 @@ import SwiftUI
 struct SelezioneGuidaView: View {
     @State private var categoriaSelezionata: CategoriaOggetto = categorieDati[0]
     @State private var problemaSelezionato: Problema?
-
+    
     var body: some View {
         NavigationView {
             VStack {

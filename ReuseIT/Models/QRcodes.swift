@@ -1,6 +1,7 @@
 import SwiftUI
 
 // MARK: - Modello Dati
+
 struct QRTicket: Identifiable {
     let id = UUID()
     let titolo: String
@@ -10,6 +11,7 @@ struct QRTicket: Identifiable {
 }
 
 // MARK: - Vista Principale
+
 struct QRCodes: View {
     // Dati di esempio per la lista
     @State private var tickets = [
@@ -50,6 +52,7 @@ struct QRCodes: View {
 }
 
 // MARK: - Vista Dettaglio
+
 struct DettaglioQR: View {
     let ticket: QRTicket
     
@@ -70,7 +73,7 @@ struct DettaglioQR: View {
                         .multilineTextAlignment(.center)
                 }
                 .padding(.top, 30)
-
+                
                 // Area QR Code
                 VStack(spacing: 25) {
                     Image(systemName: "qrcode")
@@ -99,7 +102,7 @@ struct DettaglioQR: View {
                     .cornerRadius(15)
                 }
                 .padding(.horizontal, 30)
-
+                
                 // Istruzioni
                 VStack(alignment: .leading, spacing: 12) {
                     Text("Istruzioni")

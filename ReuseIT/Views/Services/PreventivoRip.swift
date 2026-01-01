@@ -1,5 +1,5 @@
-import SwiftUI
 import PhotosUI
+import SwiftUI
 
 struct PreventivoRip: View {
     // --- Variabili Stato Form ---
@@ -24,7 +24,7 @@ struct PreventivoRip: View {
         "Abbigliamento": ["Cerniera", "Sartoria/Rammendo", "Lavaggio speciale", "Pelle/Calzature", "Altro"],
         "Giochi e accessori": ["Joystick/Controller", "Lettore disco", "Surriscaldamento", "Altro"]
     ]
-
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -32,7 +32,6 @@ struct PreventivoRip: View {
                 
                 ScrollView {
                     VStack(alignment: .leading, spacing: 20) {
-                        
                         VStack(alignment: .leading, spacing: 8) {
                             Text("Preventivo Riparazione")
                                 .font(.largeTitle).bold()
@@ -78,16 +77,15 @@ struct PreventivoRip: View {
                             }
                         }
                         
-                        // 5. SEZIONE FOTO
+                        // 5. SEZIONE FOTO AGGIORNATA
                         fotoSection
                         
                         Spacer(minLength: 30)
                         
-                        // 6. TASTO CONTINUA (Naviga verso PreventivoIN)
-                        NavigationLink(destination: PreventivoIN(
-                            oggetto: nomeOggetto,
-                            tipoRiparazione: tipoRiparazioneScelta == "Altro" ? altraRiparazioneSpecifica : tipoRiparazioneScelta
-                        )) {
+                        // 6. TASTO CONTINUA
+                        NavigationLink(destination: PreventivoIN(oggetto: nomeOggetto,
+                                                                 tipoRiparazione: tipoRiparazioneScelta == "Altro" ? altraRiparazioneSpecifica : tipoRiparazioneScelta))
+                        {
                             Text("CONTINUA")
                                 .font(.headline).foregroundColor(.white)
                                 .frame(maxWidth: .infinity).frame(height: 55)
@@ -103,9 +101,12 @@ struct PreventivoRip: View {
             .navigationBarTitleDisplayMode(.inline)
             .scrollDismissesKeyboard(.interactively)
             .animation(.spring(), value: tipoRiparazioneScelta)
+            .onChange(of: selectedItems) {
+                loadSelectedImages()
+            }
         }
     }
-
+    
     // --- Helper UI ---
     private func customTextField(title: String, placeholder: String, text: Binding<String>) -> some View {
         VStack(alignment: .leading) {
@@ -114,7 +115,7 @@ struct PreventivoRip: View {
                 .padding().background(Color.white).cornerRadius(12).padding(.horizontal)
         }
     }
-
+    
     private func pickerMenu(selection: Binding<String>, options: [String]) -> some View {
         Menu {
             ForEach(options, id: \.self) { opt in
@@ -129,78 +130,88 @@ struct PreventivoRip: View {
             .padding().background(Color.white).cornerRadius(12).padding(.horizontal)
         }
     }
-
+    
     private var fotoSection: some View {
-            VStack(alignment: .leading) {
-                HStack {
-                    Text("Foto (\(selectedImages.count)/10)").fontWeight(.semibold)
-                    if isUploading { ProgressView().padding(.leading, 5) }
-                }
-                .padding(.horizontal)
-                
-                if selectedImages.isEmpty {
-                    // Stato Vuoto: Bottone Grande
-                    PhotosPicker(selection: $selectedItems, maxSelectionCount: 10, matching: .images) {
-                        VStack(spacing: 10) {
-                            Image(systemName: "camera.fill").font(.largeTitle).foregroundColor(.blue)
-                            Text("Tocca per caricare foto").font(.caption).foregroundColor(.gray)
-                        }
-                        .frame(maxWidth: .infinity).frame(height: 120)
-                        .background(Color.white).cornerRadius(15).padding(.horizontal)
-                    }
-                } else {
-                    // Galleria Orizzontale
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 12) {
-                            // Ciclo delle foto già caricate
-                            ForEach(0..<selectedImages.count, id: \.self) { index in
-                                ZStack(alignment: .topTrailing) {
-                                    Image(uiImage: selectedImages[index])
-                                        .resizable()
-                                        .scaledToFill()
-                                        .frame(width: 100, height: 100)
-                                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                                    
-                                    Button(action: { removeImage(at: index) }) {
-                                        Image(systemName: "xmark.circle.fill")
-                                            .foregroundStyle(.white, .red)
-                                            .background(Circle().fill(.white).frame(width: 12, height: 12))
-                                    }
-                                    .padding(4)
-                                }
-                            }
-                            
-                            // IL TASTO AGGIUNGI (+) alla fine della lista
-                            if selectedImages.count < 10 {
-                                PhotosPicker(selection: $selectedItems, maxSelectionCount: 10, matching: .images) {
-                                    VStack(spacing: 5) {
-                                        Image(systemName: "plus")
-                                            .font(.title2)
-                                            .bold()
-                                        Text("Aggiungi")
-                                            .font(.system(size: 10, weight: .semibold))
-                                    }
-                                    .foregroundColor(.blue)
-                                    .frame(width: 100, height: 100)
-                                    .background(Color.white)
-                                    .cornerRadius(10)
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 10)
-                                            .stroke(style: StrokeStyle(lineWidth: 1, dash: [4]))
-                                            .foregroundColor(.blue.opacity(0.5))
-                                    )
-                                }
-                            }
-                        }
-                        .padding(.horizontal)
-                    }
-                }
+        VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                Text("Foto (\(selectedImages.count)/10)").fontWeight(.semibold)
+                if isUploading { ProgressView().padding(.leading, 5) }
             }
-            .onChange(of: selectedItems) {
-                loadSelectedImages()
+            .padding(.horizontal)
+            
+            if selectedImages.isEmpty {
+                // Stato Vuoto: Bottone Grande con bordo tratteggiato
+                PhotosPicker(selection: $selectedItems, maxSelectionCount: 10, matching: .images) {
+                    VStack(spacing: 12) {
+                        Image(systemName: "camera.fill")
+                            .font(.largeTitle)
+                            .foregroundColor(.blue)
+                        Text("Tocca per caricare fino a 10 foto")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 150)
+                    .background(Color.white)
+                    .cornerRadius(15)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 15)
+                            .stroke(style: StrokeStyle(lineWidth: 2, dash: [5]))
+                            .foregroundColor(.gray.opacity(0.5))
+                    )
+                    .padding(.horizontal)
+                }
+            } else {
+                // Galleria Orizzontale
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 15) {
+                        ForEach(0 ..< selectedImages.count, id: \.self) { index in
+                            ZStack(alignment: .topTrailing) {
+                                Image(uiImage: selectedImages[index])
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 120, height: 120)
+                                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                                
+                                Button(action: { removeImage(at: index) }) {
+                                    Image(systemName: "xmark.circle.fill")
+                                        .foregroundStyle(.white, .red)
+                                        .font(.title2)
+                                        .background(Circle().fill(.white).frame(width: 15, height: 15))
+                                }
+                                .padding(5)
+                            }
+                        }
+                        
+                        // TASTO AGGIUNGI (+) stile CreazioneAnnuncio
+                        if selectedImages.count < 10 {
+                            PhotosPicker(selection: $selectedItems, maxSelectionCount: 10 - selectedImages.count, matching: .images) {
+                                VStack(spacing: 5) {
+                                    Image(systemName: "plus")
+                                        .font(.title2)
+                                        .bold()
+                                    Text("Aggiungi")
+                                        .font(.system(size: 12, weight: .semibold))
+                                }
+                                .foregroundColor(.blue)
+                                .frame(width: 120, height: 120)
+                                .background(Color.white)
+                                .cornerRadius(12)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .stroke(style: StrokeStyle(lineWidth: 1, dash: [4]))
+                                        .foregroundColor(.blue.opacity(0.5))
+                                )
+                            }
+                        }
+                    }
+                    .padding(.horizontal)
+                    .padding(.top, 5)
+                }
             }
         }
-
+    }
+    
     private func loadSelectedImages() {
         isUploading = true
         Task {
@@ -210,19 +221,23 @@ struct PreventivoRip: View {
                     loaded.append(img)
                 }
             }
-            await MainActor.run { selectedImages = loaded; isUploading = false }
+            await MainActor.run {
+                selectedImages.append(contentsOf: loaded)
+                selectedItems.removeAll() // Svuotiamo il picker per nuove selezioni
+                isUploading = false
+            }
         }
     }
-
+    
     private func removeImage(at index: Int) {
         selectedImages.remove(at: index)
-        selectedItems.remove(at: index)
     }
-
+    
     var isFormValid: Bool {
         let baseValid = !nomeOggetto.isEmpty && tipoRiparazioneScelta != "Seleziona tipo"
         let altroValid = (tipoRiparazioneScelta == "Altro") ? !altraRiparazioneSpecifica.isEmpty : true
         let modelloValid = (tipologiaScelta == "Telefonia" || tipologiaScelta == "Computer") ? !modello.isEmpty : true
-        return baseValid && altroValid && modelloValid
+        // Validiamo anche la presenza di almeno una foto
+        return baseValid && altroValid && modelloValid && !selectedImages.isEmpty
     }
 }

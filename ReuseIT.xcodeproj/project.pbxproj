@@ -24,7 +24,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		65DCF7212F04BE8200E6D5C1 /* Paper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Paper.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		65DCF7212F04BE8200E6D5C1 /* ReuseIT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReuseIT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65DCF72E2F04BE8200E6D5C1 /* PaperTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PaperTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		65DCF7382F04BE8300E6D5C1 /* PaperUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PaperUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -85,7 +85,7 @@
 		65DCF7222F04BE8200E6D5C1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				65DCF7212F04BE8200E6D5C1 /* Paper.app */,
+				65DCF7212F04BE8200E6D5C1 /* ReuseIT.app */,
 				65DCF72E2F04BE8200E6D5C1 /* PaperTests.xctest */,
 				65DCF7382F04BE8300E6D5C1 /* PaperUITests.xctest */,
 			);
@@ -95,9 +95,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		65DCF7202F04BE8200E6D5C1 /* Paper */ = {
+		65DCF7202F04BE8200E6D5C1 /* ReuseIT */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 65DCF7422F04BE8300E6D5C1 /* Build configuration list for PBXNativeTarget "Paper" */;
+			buildConfigurationList = 65DCF7422F04BE8300E6D5C1 /* Build configuration list for PBXNativeTarget "ReuseIT" */;
 			buildPhases = (
 				65DCF71D2F04BE8200E6D5C1 /* Sources */,
 				65DCF71E2F04BE8200E6D5C1 /* Frameworks */,
@@ -110,11 +110,11 @@
 			fileSystemSynchronizedGroups = (
 				65DCF7EC2F04DDC700E6D5C1 /* ReuseIT */,
 			);
-			name = Paper;
+			name = ReuseIT;
 			packageProductDependencies = (
 			);
 			productName = Paper;
-			productReference = 65DCF7212F04BE8200E6D5C1 /* Paper.app */;
+			productReference = 65DCF7212F04BE8200E6D5C1 /* ReuseIT.app */;
 			productType = "com.apple.product-type.application";
 		};
 		65DCF72D2F04BE8200E6D5C1 /* PaperTests */ = {
@@ -201,7 +201,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				65DCF7202F04BE8200E6D5C1 /* Paper */,
+				65DCF7202F04BE8200E6D5C1 /* ReuseIT */,
 				65DCF72D2F04BE8200E6D5C1 /* PaperTests */,
 				65DCF7372F04BE8300E6D5C1 /* PaperUITests */,
 			);
@@ -259,12 +259,12 @@
 /* Begin PBXTargetDependency section */
 		65DCF7302F04BE8200E6D5C1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 65DCF7202F04BE8200E6D5C1 /* Paper */;
+			target = 65DCF7202F04BE8200E6D5C1 /* ReuseIT */;
 			targetProxy = 65DCF72F2F04BE8200E6D5C1 /* PBXContainerItemProxy */;
 		};
 		65DCF73A2F04BE8300E6D5C1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 65DCF7202F04BE8200E6D5C1 /* Paper */;
+			target = 65DCF7202F04BE8200E6D5C1 /* ReuseIT */;
 			targetProxy = 65DCF7392F04BE8300E6D5C1 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -550,7 +550,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		65DCF7422F04BE8300E6D5C1 /* Build configuration list for PBXNativeTarget "Paper" */ = {
+		65DCF7422F04BE8300E6D5C1 /* Build configuration list for PBXNativeTarget "ReuseIT" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				65DCF7432F04BE8300E6D5C1 /* Debug */,

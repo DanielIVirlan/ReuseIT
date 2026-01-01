@@ -1,5 +1,5 @@
-import SwiftUI
 import PhotosUI
+import SwiftUI
 
 struct ValutazioneView: View {
     @State private var titolo = ""
@@ -12,10 +12,10 @@ struct ValutazioneView: View {
     
     let categorie = ["Elettronica", "Mobili", "Abbigliamento", "Libri", "Altro"]
     let condizioni = ["Nuovo", "Ottimo", "Buono", "Usurato"]
-
+    
     var body: some View {
         NavigationStack {
-            VStack(spacing: 0) { 
+            VStack(spacing: 0) {
                 Form {
                     Section("Dati Oggetto") {
                         TextField("Titolo", text: $titolo)
@@ -27,67 +27,69 @@ struct ValutazioneView: View {
                         }
                         TextEditor(text: $descrizione)
                             .frame(height: 100)
-                            .overlay(
-                                Group {
-                                    if descrizione.isEmpty {
-                                        Text("Inserisci una descrizione...")
-                                            .foregroundColor(.gray)
-                                            .padding(.horizontal, 5)
-                                            .padding(.vertical, 8)
-                                    }
-                                }, alignment: .topLeading
-                            )
                     }
                     
-                    Section("Foto") {
-                        PhotosPicker(selection: $selectedItems, maxSelectionCount: 3, matching: .images) {
-                            HStack {
-                                Image(systemName: "photo.on.rectangle")
-                                    .foregroundColor(.blue)
-                                Text("Aggiungi Foto")
-                                    .foregroundColor(.blue)
+                    Section("Foto (\(immaginiSelezionate.count)/10)") {
+                        if immaginiSelezionate.isEmpty {
+                            PhotosPicker(selection: $selectedItems, maxSelectionCount: 10, matching: .images) {
+                                VStack(spacing: 12) {
+                                    Image(systemName: "camera.fill").font(.largeTitle).foregroundColor(.blue)
+                                    Text("Tocca per caricare fino a 10 foto").font(.subheadline).foregroundColor(.gray)
+                                }
+                                .frame(maxWidth: .infinity).frame(height: 150)
+                                .background(Color.white).cornerRadius(15)
+                                .overlay(RoundedRectangle(cornerRadius: 15).stroke(style: StrokeStyle(lineWidth: 2, dash: [5])).foregroundColor(.gray.opacity(0.5)))
                             }
-                        }
-                        .onChange(of: selectedItems) {
-                            caricaImmagini()
-                        }
-                        
-                        if !immaginiSelezionate.isEmpty {
+                        } else {
                             ScrollView(.horizontal, showsIndicators: false) {
-                                HStack(spacing: 10) {
-                                    ForEach(immaginiSelezionate, id: \.self) { img in
-                                        Image(uiImage: img)
-                                            .resizable()
-                                            .scaledToFill()
-                                            .frame(width: 80, height: 80)
-                                            .cornerRadius(8)
-                                            .clipped()
+                                HStack(spacing: 15) {
+                                    ForEach(0 ..< immaginiSelezionate.count, id: \.self) { index in
+                                        ZStack(alignment: .topTrailing) {
+                                            Image(uiImage: immaginiSelezionate[index])
+                                                .resizable().scaledToFill()
+                                                .frame(width: 120, height: 120).clipShape(RoundedRectangle(cornerRadius: 12))
+                                            
+                                            Button(action: { immaginiSelezionate.remove(at: index) }) {
+                                                Image(systemName: "xmark.circle.fill")
+                                                    .foregroundStyle(.white, .red).font(.title2)
+                                                    .background(Circle().fill(.white).frame(width: 15, height: 15))
+                                            }.padding(5)
+                                        }
+                                    }
+                                    
+                                    if immaginiSelezionate.count < 10 {
+                                        PhotosPicker(selection: $selectedItems, maxSelectionCount: 10 - immaginiSelezionate.count, matching: .images) {
+                                            VStack {
+                                                Image(systemName: "plus").font(.title)
+                                                Text("Aggiungi").font(.caption)
+                                            }
+                                            .frame(width: 120, height: 120)
+                                            .background(Color.white)
+                                            .foregroundColor(.blue)
+                                            .cornerRadius(12)
+                                            .overlay(RoundedRectangle(cornerRadius: 12).stroke(style: StrokeStyle(lineWidth: 1, dash: [3])).foregroundColor(.blue))
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
+                .onChange(of: selectedItems) { caricaImmagini() }
                 
-                // --- TASTO NATIVO IN BASSO ---
+                // Tasto in basso
                 VStack {
                     Button(action: { vaiARisultato = true }) {
-                        Text("RICEVI VALUTAZIONE")
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 55)
-                            .background(titolo.isEmpty || immaginiSelezionate.isEmpty ? Color.gray : Color.blue)
-                            .cornerRadius(12)
+                        Text("RICEVI VALUTAZIONE").font(.headline).foregroundColor(.white)
+                            .frame(maxWidth: .infinity).frame(height: 55)
+                            .background(titolo.isEmpty || immaginiSelezionate.isEmpty ? Color.gray : Color.blue).cornerRadius(12)
                     }
                     .disabled(titolo.isEmpty || immaginiSelezionate.isEmpty)
-                    .padding(.horizontal, 20) // Spazio laterale
-                    .padding(.top, 10)         // Spazio sopra il tasto
-                    .padding(.bottom, 10)      // Spazio sotto il tasto (rispetto alla safe area)
-                }
-                .background(Color(UIColor.systemGroupedBackground))
+                    .padding(.horizontal, 20).padding(.vertical, 10)
+                }.background(Color(UIColor.systemGroupedBackground))
             }
             .navigationTitle("Valuta Oggetto")
+            // NAVIGAZIONE: Collega il tasto alla vista Risultato
             .navigationDestination(isPresented: $vaiARisultato) {
                 RisultatoValutazioneView(
                     titolo: titolo,
@@ -100,15 +102,15 @@ struct ValutazioneView: View {
     }
     
     func caricaImmagini() {
-        for item in selectedItems {
-            Task {
-                if let data = try? await item.loadTransferable(type: Data.self),
-                   let img = UIImage(data: data) {
+        Task {
+            for item in selectedItems {
+                if let data = try? await item.loadTransferable(type: Data.self), let uiImage = UIImage(data: data) {
                     await MainActor.run {
-                        self.immaginiSelezionate.append(img)
+                        if immaginiSelezionate.count < 10 { immaginiSelezionate.append(uiImage) }
                     }
                 }
             }
+            selectedItems.removeAll()
         }
     }
 }

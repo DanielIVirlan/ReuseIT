@@ -1,9 +1,8 @@
 import SwiftUI
 
 struct OpzioniAcquisto: View {
-    
     @State private var selectedOption: DeliveryOption? = nil
-    @State private var price: String = "30"
+    @State private var price: String = "850"
     @State private var showingMap: Bool = false
     
     @State private var via: String = ""
@@ -71,6 +70,7 @@ struct OpzioniAcquisto: View {
             }
             .navigationDestination(isPresented: $vaiAlMenu) {
                 MainMenu(username: "Admin")
+                    .navigationBarBackButtonHidden(true) // Nasconde il tasto torna indietro
             }
         }
     }
@@ -78,7 +78,6 @@ struct OpzioniAcquisto: View {
 
 // --- Sub-Views ---
 extension OpzioniAcquisto {
-    
     private var headerSection: some View {
         Text("Modalità d'Acquisto")
             .font(.system(size: 30, weight: .bold))
@@ -120,7 +119,7 @@ extension OpzioniAcquisto {
             Group {
                 TextField("Via e numero civico", text: $via)
                 TextField("CAP", text: $cap).keyboardType(.numberPad)
-                TextField("Interno e Scala (opzionale)", text: $internoECivico)
+                TextField("Interno e Scala", text: $internoECivico)
             }
             .padding().background(Color.white).cornerRadius(12)
         }
@@ -200,7 +199,7 @@ extension OpzioniAcquisto {
         }
         .background(Color(red: 0.94, green: 0.95, blue: 0.97).ignoresSafeArea(.all, edges: .bottom))
     }
-
+    
     // --- Schermata temporanea di conferma ---
     var schermataConfermaTemporanea: some View {
         VStack(spacing: 30) {

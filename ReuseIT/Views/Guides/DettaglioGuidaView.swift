@@ -4,7 +4,7 @@ struct DettaglioGuidaView: View {
     let guida: Guida
     let titoloProblema: String
     @Environment(\.openURL) var openURL
-
+    
     var body: some View {
         VStack(spacing: 0) {
             List {
@@ -23,7 +23,7 @@ struct DettaglioGuidaView: View {
                             .fontWeight(.bold)
                     }
                 }
-
+                
                 // Sezione Autore e Voti
                 Section(header: Text("AUTORE DELLA GUIDA")) {
                     VStack(alignment: .leading, spacing: 12) {
@@ -94,6 +94,7 @@ struct DettaglioGuidaView: View {
 }
 
 // MARK: - PREVIEW
+
 #Preview {
     NavigationView {
         DettaglioGuidaView(

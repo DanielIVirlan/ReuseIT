@@ -1,14 +1,19 @@
 import SwiftUI
 
 struct SceltaSmaltimentoView: View {
-    // Usiamo DeliveryOption per coerenza con il resto del tuo codice
     @State private var opzioneScelta: DeliveryOption? = nil
     @State private var lockerInfo = ""
     @State private var mostraMappa = false
+    
+    // Stati per la gestione della conferma e QR Code
+    @State private var mostraConfermaOverlay = false
+    @State private var vaiAQRCodes = false
+    @State private var vaiAlMenu = false
+    @State private var codiceTemporaneo = "RCS-123" // Codice simulato per lo smaltimento
+    
     @State private var messaggioConferma: String? = nil
-    @State private var tornaAlMenu = false
     @State private var mostraAlert = false
-
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -22,19 +27,18 @@ struct SceltaSmaltimentoView: View {
                                 .foregroundColor(.black)
                                 .padding(.top, 40)
                             
-                            // --- SEZIONE OPZIONI (Stile OpzioniVendita) ---
+                            // --- SEZIONE OPZIONI ---
                             VStack(spacing: 15) {
                                 ForEach(DeliveryOption.allCases, id: \.self) { option in
                                     Button(action: {
                                         withAnimation(.spring()) {
                                             opzioneScelta = option
-                                            if option != .locker && option != .safeZone {
+                                            if option != .locker, option != .safeZone {
                                                 lockerInfo = ""
                                             }
                                         }
                                     }) {
                                         HStack {
-                                            // Cerchio di selezione a sinistra
                                             Image(systemName: opzioneScelta == option ? "checkmark.circle.fill" : "circle")
                                                 .resizable()
                                                 .frame(width: 28, height: 28)
@@ -52,7 +56,6 @@ struct SceltaSmaltimentoView: View {
                                         .background(Color.white)
                                         .cornerRadius(15)
                                         .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
-                                        // Bordo blu se selezionato
                                         .overlay(
                                             RoundedRectangle(cornerRadius: 15)
                                                 .stroke(opzioneScelta == option ? Color.blue : Color.clear, lineWidth: 2)
@@ -61,15 +64,14 @@ struct SceltaSmaltimentoView: View {
                                 }
                             }
                             .padding(.horizontal)
-
-                            // Bottone Mappa Dinamico
+                            
                             if opzioneScelta == .locker || opzioneScelta == .safeZone {
                                 mapViewButton.transition(.opacity)
                             }
                         }
                     }
-
-                    // --- AREA BOTTONI NATIVI IN BASSO ---
+                    
+                    // --- AREA BOTTONI IN BASSO ---
                     VStack(spacing: 15) {
                         Button(action: {
                             messaggioConferma = "Oggetto aggiunto con successo all'Archivio Ricordi!"
@@ -82,10 +84,12 @@ struct SceltaSmaltimentoView: View {
                             .font(.headline)
                             .foregroundColor(.blue)
                         }
-
+                        
                         Button(action: {
-                            messaggioConferma = "Richiesta di smaltimento confermata!"
-                            mostraAlert = true
+                            // Avviamo la logica di conferma stile "tendina"
+                            withAnimation {
+                                mostraConfermaOverlay = true
+                            }
                         }) {
                             Text("CONFERMA SMALTIMENTO")
                                 .font(.title3)
@@ -102,26 +106,80 @@ struct SceltaSmaltimentoView: View {
                     .padding(.horizontal)
                     .padding(.bottom, 20)
                     .padding(.top, 10)
-                    .background(Color(red: 0.94, green: 0.95, blue: 0.97).ignoresSafeArea())
                 }
             }
             .navigationTitle("")
-            .alert("Completato", isPresented: $mostraAlert) {
-                Button("OK") {
-                    if messaggioConferma == "Richiesta di smaltimento confermata!" {
-                        tornaAlMenu = true
-                    }
-                }
-            } message: {
-                if let messaggio = messaggioConferma { Text(messaggio) }
+            // TENDINA QR CODE / CONFERMA
+            .fullScreenCover(isPresented: $mostraConfermaOverlay) {
+                schermataConfermaSmaltimento
             }
-            .navigationDestination(isPresented: $tornaAlMenu) {
+            // NAVIGAZIONE
+            .navigationDestination(isPresented: $vaiAQRCodes) {
+                QRCodes()
+            }
+            .navigationDestination(isPresented: $vaiAlMenu) {
                 MainMenu(username: "Admin")
+            }
+            .alert("Info", isPresented: $mostraAlert) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                if let msg = messaggioConferma { Text(msg) }
             }
         }
     }
-
-    // Validazione della Form
+    
+    // --- SCHERMATA TEMPORANEA (Tendina) ---
+    var schermataConfermaSmaltimento: some View {
+        VStack(spacing: 30) {
+            Spacer()
+            
+            if opzioneScelta == .locker {
+                Text("Locker Prenotato!").font(.title).bold()
+                
+                Image(systemName: "qrcode")
+                    .resizable().scaledToFit()
+                    .frame(width: 200, height: 200)
+                    .padding()
+                    .background(Color.white)
+                    .cornerRadius(20)
+                    .shadow(radius: 10)
+                
+                VStack(spacing: 5) {
+                    Text("CODICE DEPOSITO").font(.caption2).foregroundColor(.secondary)
+                    Text(codiceTemporaneo).font(.system(size: 32, weight: .black, design: .monospaced))
+                }
+                
+                VStack(spacing: 15) {
+                    Text("Istruzioni Deposito").font(.headline)
+                    Text("Recati al locker scelto e scansiona il codice per aprire la cella.").font(.subheadline).multilineTextAlignment(.center).padding(.horizontal)
+                }
+            } else {
+                Image(systemName: "checkmark.seal.fill")
+                    .resizable().frame(width: 100, height: 100).foregroundColor(.green)
+                Text("Richiesta Confermata!").font(.largeTitle).bold()
+                Text("Segui le istruzioni per il metodo scelto.")
+                    .font(.body).multilineTextAlignment(.center).padding(.horizontal)
+            }
+            
+            Spacer()
+        }
+        .background(Color(red: 0.94, green: 0.95, blue: 0.97).ignoresSafeArea())
+        .onAppear {
+            // Sparisce dopo 3 secondi e naviga
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                mostraConfermaOverlay = false
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    if opzioneScelta == .locker {
+                        vaiAQRCodes = true
+                    } else {
+                        vaiAlMenu = true
+                    }
+                }
+            }
+        }
+    }
+    
     var isFormValid: Bool {
         guard let option = opzioneScelta else { return false }
         if option == .locker || option == .safeZone {
@@ -129,8 +187,7 @@ struct SceltaSmaltimentoView: View {
         }
         return true
     }
-
-    // Bottone Mappa (Stile OpzioniVendita)
+    
     var mapViewButton: some View {
         Button(action: { mostraMappa = true }) {
             HStack(spacing: 15) {

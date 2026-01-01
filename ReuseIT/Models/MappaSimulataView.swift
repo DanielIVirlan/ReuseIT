@@ -22,7 +22,7 @@ struct MappaSimulataView: View {
             Image("mappa").resizable().scaledToFill().ignoresSafeArea()
             
             GeometryReader { geometry in
-                ForEach(0..<fixedLocations.count, id: \.self) { index in
+                ForEach(0 ..< fixedLocations.count, id: \.self) { index in
                     let loc = fixedLocations[index]
                     
                     ZStack {

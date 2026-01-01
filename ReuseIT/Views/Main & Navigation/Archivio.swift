@@ -1,5 +1,5 @@
-import SwiftUI
 import PhotosUI
+import SwiftUI
 
 struct Ricordo: Identifiable {
     let id = UUID()
@@ -11,7 +11,7 @@ struct Ricordo: Identifiable {
 struct Archivio: View {
     @State private var ricordi: [Ricordo] = []
     @State private var mostraAggiungi = false
-
+    
     var body: some View {
         NavigationView {
             ZStack {
@@ -65,7 +65,7 @@ struct Archivio: View {
             }
         }
     }
-
+    
     func rimuoviRicordo(at offsets: IndexSet) {
         ricordi.remove(atOffsets: offsets)
     }
@@ -119,12 +119,11 @@ struct DettaglioRicordoView: View {
 struct FormInserimentoView: View {
     @Environment(\.dismiss) var dismiss
     @Binding var ricordi: [Ricordo]
-    
     @State private var nome = ""
     @State private var descrizione = ""
     @State private var selectedItems: [PhotosPickerItem] = []
     @State private var immaginiSelezionate: [UIImage] = []
-
+    
     var body: some View {
         NavigationView {
             Form {
@@ -133,33 +132,52 @@ struct FormInserimentoView: View {
                     TextEditor(text: $descrizione).frame(height: 100)
                 }
                 
-                Section("Foto (Seleziona multiple)") {
-                    // CORREZIONE ERRORE: Usiamo HStack invece di Label per sicurezza
-                    PhotosPicker(selection: $selectedItems, maxSelectionCount: 10, matching: .images) {
-                        HStack {
-                            Image(systemName: "photo.on.rectangle.angled")
-                            Text("Scegli dalla galleria")
+                Section("Foto (\(immaginiSelezionate.count)/10)") {
+                    if immaginiSelezionate.isEmpty {
+                        PhotosPicker(selection: $selectedItems, maxSelectionCount: 10, matching: .images) {
+                            VStack(spacing: 12) {
+                                Image(systemName: "camera.fill").font(.largeTitle).foregroundColor(.blue)
+                                Text("Carica fino a 10 foto").font(.subheadline).foregroundColor(.gray)
+                            }
+                            .frame(maxWidth: .infinity).frame(height: 140)
+                            .background(Color.white).cornerRadius(15)
+                            .overlay(RoundedRectangle(cornerRadius: 15).stroke(style: StrokeStyle(lineWidth: 2, dash: [5])).foregroundColor(.gray.opacity(0.5)))
                         }
-                    }
-                    .onChange(of: selectedItems) {
-                        caricaImmagini()
-                    }
-                    
-                    if !immaginiSelezionate.isEmpty {
-                        ScrollView(.horizontal) {
-                            HStack {
-                                ForEach(immaginiSelezionate, id: \.self) { img in
-                                    Image(uiImage: img)
-                                        .resizable()
-                                        .scaledToFill()
-                                        .frame(width: 80, height: 80)
-                                        .cornerRadius(8).clipped()
+                    } else {
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 15) {
+                                ForEach(0 ..< immaginiSelezionate.count, id: \.self) { index in
+                                    ZStack(alignment: .topTrailing) {
+                                        Image(uiImage: immaginiSelezionate[index])
+                                            .resizable().scaledToFill()
+                                            .frame(width: 100, height: 100).clipShape(RoundedRectangle(cornerRadius: 12))
+                                        
+                                        Button(action: { immaginiSelezionate.remove(at: index) }) {
+                                            Image(systemName: "xmark.circle.fill")
+                                                .foregroundStyle(.white, .red).font(.title3)
+                                                .background(Circle().fill(.white).frame(width: 12, height: 12))
+                                        }.padding(4)
+                                    }
+                                }
+                                
+                                // IL TASTO AGGIUNGI IDENTICO A CREAZIONE ANNUNCIO
+                                if immaginiSelezionate.count < 10 {
+                                    PhotosPicker(selection: $selectedItems, maxSelectionCount: 10 - immaginiSelezionate.count, matching: .images) {
+                                        VStack {
+                                            Image(systemName: "plus").font(.title2)
+                                            Text("Aggiungi").font(.caption2)
+                                        }
+                                        .frame(width: 100, height: 100)
+                                        .background(Color.white).foregroundColor(.blue).cornerRadius(12)
+                                        .overlay(RoundedRectangle(cornerRadius: 12).stroke(style: StrokeStyle(lineWidth: 1, dash: [3])).foregroundColor(.blue))
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
+            .onChange(of: selectedItems) { caricaImmagini() }
             .navigationTitle("Nuovo Ricordo")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -167,24 +185,22 @@ struct FormInserimentoView: View {
                         let nuovo = Ricordo(nome: nome, descrizione: descrizione, immagini: immaginiSelezionate)
                         ricordi.append(nuovo)
                         dismiss()
-                    }
-                    .disabled(nome.isEmpty || immaginiSelezionate.isEmpty)
+                    }.disabled(nome.isEmpty || immaginiSelezionate.isEmpty)
                 }
             }
         }
     }
-
+    
     func caricaImmagini() {
-        immaginiSelezionate.removeAll()
-        for item in selectedItems {
-            Task {
-                if let data = try? await item.loadTransferable(type: Data.self),
-                   let uiImage = UIImage(data: data) {
+        Task {
+            for item in selectedItems {
+                if let data = try? await item.loadTransferable(type: Data.self), let uiImage = UIImage(data: data) {
                     await MainActor.run {
-                        self.immaginiSelezionate.append(uiImage)
+                        if immaginiSelezionate.count < 10 { immaginiSelezionate.append(uiImage) }
                     }
                 }
             }
+            selectedItems.removeAll()
         }
     }
 }

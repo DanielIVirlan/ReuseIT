@@ -1,5 +1,5 @@
-import SwiftUI
 import PhotosUI
+import SwiftUI
 
 struct CreazioneAnnuncio: View {
     // --- Variabili per i dati del form ---
@@ -12,8 +12,8 @@ struct CreazioneAnnuncio: View {
     
     // --- Variabili per le FOTO ---
     @State private var selectedItems: [PhotosPickerItem] = [] // Elementi selezionati
-    @State private var selectedImages: [UIImage] = []        // Immagini caricate
-    @State private var isUploading: Bool = false             // Stato per la ProgressView
+    @State private var selectedImages: [UIImage] = [] // Immagini caricate
+    @State private var isUploading: Bool = false // Stato per la ProgressView
     
     // Liste per i menu
     let condizioni = ["Nuovo", "Come nuovo", "Buone condizioni", "Usurato"]
@@ -26,7 +26,6 @@ struct CreazioneAnnuncio: View {
                 
                 ScrollView {
                     VStack(alignment: .leading, spacing: 25) {
-                        
                         Text("Nuovo Annuncio")
                             .font(.system(size: 30, weight: .bold))
                             .padding(.top)
@@ -111,7 +110,7 @@ struct CreazioneAnnuncio: View {
                                 // Galleria Orizzontale con foto selezionate
                                 ScrollView(.horizontal, showsIndicators: false) {
                                     HStack(spacing: 15) {
-                                        ForEach(0..<selectedImages.count, id: \.self) { index in
+                                        ForEach(0 ..< selectedImages.count, id: \.self) { index in
                                             ZStack(alignment: .topTrailing) {
                                                 Image(uiImage: selectedImages[index])
                                                     .resizable()
@@ -199,9 +198,6 @@ struct CreazioneAnnuncio: View {
                         
                         Spacer(minLength: 40)
                         
-                        
-                       
-                        
                         NavigationLink(destination: OpzioniVendita()) {
                             Text("CONTINUA")
                                 .font(.title3).fontWeight(.bold).foregroundColor(.white)
@@ -240,17 +236,10 @@ struct CreazioneAnnuncio: View {
     // --- Logica per rimuovere un'immagine ---
     private func removeImage(at index: Int) {
         selectedImages.remove(at: index)
-        selectedItems.remove(at: index) 
+        selectedItems.remove(at: index)
     }
     
     var isFormValid: Bool {
         return !titolo.isEmpty && !comune.isEmpty && !selectedImages.isEmpty
-    }
-}
-
-// Preview
-struct CreazioneAnnuncio_Previews: PreviewProvider {
-    static var previews: some View {
-        CreazioneAnnuncio()
     }
 }

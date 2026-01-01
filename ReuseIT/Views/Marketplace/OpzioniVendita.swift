@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct OpzioniVendita: View {
-    
     @State private var vaiAlMenu = false
     @State private var mostraConfermaQR = false
     @State private var vaiAQRCodes = false
@@ -15,7 +14,7 @@ struct OpzioniVendita: View {
     @State private var cap: String = ""
     @State private var internoECivico: String = ""
     @State private var lockerSceltoInfo: String = ""
-
+    
     @Environment(\.dismiss) var dismiss
     
     var isFormValid: Bool {
@@ -67,8 +66,9 @@ struct OpzioniVendita: View {
             }
         }
     }
-
+    
     // MARK: - Sotto-Viste
+
     var deliveryOptionsSection: some View {
         VStack(spacing: 25) {
             Text("Modalità di ritiro")
@@ -80,10 +80,11 @@ struct OpzioniVendita: View {
                 ForEach(DeliveryOption.allCases, id: \.self) { option in
                     Button(action: {
                         withAnimation(.spring()) {
-                            selectedOption = option
-                            if option != .locker && option != .safeZone {
+                            // LOGICA DI RESET: Se l'opzione cambia, svuoto la scelta della mappa
+                            if selectedOption != option {
                                 lockerSceltoInfo = ""
                             }
+                            selectedOption = option
                         }
                     }) {
                         HStack {
@@ -125,7 +126,7 @@ struct OpzioniVendita: View {
             Spacer(minLength: 20)
         }
     }
-
+    
     var mapViewButton: some View {
         Button(action: { showingMap = true }) {
             HStack(spacing: 15) {
@@ -153,7 +154,7 @@ struct OpzioniVendita: View {
             }
         }
     }
-
+    
     var schermataConfermaTemporanea: some View {
         VStack(spacing: 30) {
             Spacer()
@@ -185,7 +186,6 @@ struct OpzioniVendita: View {
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                 mostraConfermaQR = false
-                // Verifichiamo la destinazione dopo la chiusura del cover
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     if selectedOption == .locker {
                         vaiAQRCodes = true

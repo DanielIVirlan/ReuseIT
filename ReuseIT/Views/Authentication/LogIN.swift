@@ -1,8 +1,5 @@
 import SwiftUI
 
-
-
-
 struct LogIN: View {
     // MARK: - Variabili di Stato
     
@@ -23,7 +20,6 @@ struct LogIN: View {
         NavigationStack {
             // Se l'utente è loggato, mostra la vista CreazioneAnnuncio
             if isLoggedIn {
-                
                 CreazioneAnnuncioWrapper(username: username) // Un wrapper per la view di destinazione
             } else {
                 // Schermata di Login
@@ -32,13 +28,10 @@ struct LogIN: View {
                     Color(red: 0.94, green: 0.95, blue: 0.97).ignoresSafeArea()
                     
                     VStack(spacing: 30) {
-                        
                         Text("Accedi")
                             .font(.system(size: 40, weight: .bold))
                             .foregroundColor(.black)
                             .padding(.top, 50)
-                        
-                        
                         
                         VStack(spacing: 20) {
                             CustomTextField(
@@ -70,11 +63,9 @@ struct LogIN: View {
                         }
                         .disabled(!isLoginEnabled)
                         .padding(.horizontal)
-                        
-                        
-                    }
+                      }
                     .alert("Accesso Fallito", isPresented: $showingAlert) {
-                        Button("OK", role: .cancel) { }
+                        Button("OK", role: .cancel) {}
                     } message: {
                         Text("Username o Password errati. Le credenziali sono '\(validUsername)' e '\(validPassword)'.")
                     }
@@ -90,7 +81,7 @@ struct LogIN: View {
     }
     
     func authenticateUser() {
-        if username == validUsername && password == validPassword {
+        if username == validUsername, password == validPassword {
             // Successo: imposta lo stato di login su true
             withAnimation {
                 isLoggedIn = true
@@ -103,8 +94,7 @@ struct LogIN: View {
     }
 }
 
-// MARK: - Componenti Riutilizzabili (Mantengono lo stile precedente)
-
+// MARK: - Componenti Riutilizzabili
 
 struct CustomTextField: View {
     let placeholder: String
@@ -117,8 +107,10 @@ struct CustomTextField: View {
                 .foregroundColor(.gray)
             
             TextField(placeholder, text: $text)
-                .autocapitalization(.none)
+            
+                .textInputAutocapitalization(.never)
                 .disableAutocorrection(true)
+                .keyboardType(.default)
         }
         .padding()
         .frame(height: 55)
@@ -156,8 +148,7 @@ struct CustomSecureField: View {
     }
 }
 
-// MARK: - Wrapper per CreazioneAnnuncio (Sostituisce WelcomeView)
-
+// MARK: - Wrapper per CreazioneAnnuncio
 
 struct CreazioneAnnuncioWrapper: View {
     let username: String // Riceve il nome dal Login
@@ -187,8 +178,6 @@ struct CreazioneAnnuncioWrapper: View {
     }
 }
 
-//TEST
-
 // MARK: - Preview
 
 struct LogIN_Previews: PreviewProvider {
@@ -196,7 +185,3 @@ struct LogIN_Previews: PreviewProvider {
         LogIN()
     }
 }
-
-
-
-
