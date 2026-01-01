@@ -15,7 +15,7 @@ Ecco l'app in funzione (Xcode 17 / iOS 18+):
     </td>
     <td>
       <p align="right"><b>Demo Parte 2</b></p>
-      <img src="https://github.com/user-attachments/assets/bb8308ef-a6a5-4390-9a8d-fc39c105ba8f" width="50%" />
+      <img src="https://github.com/user-attachments/assets/bb8308ef-a6a5-4390-9a8d-fc39c105ba8f" width="100%" />
     </td>
   </tr>
 </table>
