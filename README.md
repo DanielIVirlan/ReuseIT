@@ -8,9 +8,6 @@
 Ecco l'app in funzione (Xcode 17 / iOS 18+):
 
 ![Demo Video](https://github.com/user-attachments/assets/8e148fb1-f9ab-4fbd-86c2-80b391ea268d)
-![New Assets](https://github.com/user-attachments/assets/198d2225-2c18-4450-a547-ef2ebe07c0d4)
-
-
 
 
 ---
