@@ -193,8 +193,7 @@ struct MieAnnunciView: View {
                         .buttonStyle(.bordered)
                         
                         Button(role: .destructive, action: {
-                            if let index = annunci.firstIndex(where: { $0.id == annuncio.id }) {
-                                withAnimation { annunci.remove(at: index) }
+                            if annunci.firstIndex(where: { $0.id == annuncio.id }) != nil {
                             }
                         }) {
                             HStack {
@@ -247,8 +246,9 @@ struct ModificaAnnuncioView: View {
                             Text("Aggiungi foto dalla galleria")
                         }
                     }
-                    .onChange(of: selectedItems) { newItems in caricaImmagini(da: newItems) }
-                    
+                    .onChange(of: selectedItems) { oldValue, newValue in
+                        caricaImmagini(da: newValue)
+                    }
                     if !immaginiLocali.isEmpty {
                         ScrollView(.horizontal) {
                             HStack(spacing: 15) {
