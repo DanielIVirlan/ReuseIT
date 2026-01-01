@@ -57,7 +57,7 @@ Il modulo mappe è attualmente in modalità **Interattiva Demo**:
 ---
 
 ## 👨‍💻 Installazione Locale
-1. Clonare la repository: `git clone https://github.com/TUO_UTENTE/Paper.git`
+1. Clonare la repository: `git clone https://github.com/DanielIVirlan/ReuseIT.git`
 2. Aprire `Paper.xcodeproj` in Xcode.
 3. Selezionare un simulatore iPhone (iOS 18+).
 4. Build & Run (`Cmd + R`).
