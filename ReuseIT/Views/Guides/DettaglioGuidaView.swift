@@ -8,7 +8,7 @@ struct DettaglioGuidaView: View {
     var body: some View {
         VStack(spacing: 0) {
             List {
-                // Sezione Info Rapide
+                // Sezione Info Rapide ciao
                 Section(header: Text("SCHEDA TECNICA")) {
                     HStack {
                         Label("Tempo stimato", systemImage: "clock")
